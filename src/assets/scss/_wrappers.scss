@@ -1,0 +1,7 @@
+/* PS: this file is linked in vue.config.js under 'css.loaderOptions.sass.data' */
+
+.container {
+  margin: 0 auto;
+  // @todo set max-widths? & padding
+  padding: 0 20px;
+}
