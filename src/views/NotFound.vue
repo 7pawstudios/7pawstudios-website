@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="title">
-      404 Page Not Found
+      404 Carrot Not Found
     </h1>
   </div>
 </template>

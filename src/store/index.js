@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    openNav: false
+    openNav: false,
+    animationStage2: false
   },
   mutations: {
     toggleNav(state) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
       if(state.openNav) {
         state.openNav = false
       }
+    },
+    setAnimationStage2(state, param) {
+      state.animationStage2 = param
     }
   },
   actions: {

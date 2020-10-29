@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'Logo Icon'
+  name: 'LogoIcon'
 }
 </script>
 
