@@ -34,7 +34,7 @@ module.exports = {
     themeColor: "#1a1c20",
     backgroundColor: "#1a1c20",
     assetsVersion: "1.0.1a",
-    msTileColor: "#ffffff"
+    msTileColor: "#1a1c20"
   },
 
   // whether filename will contain hash part
