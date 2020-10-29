@@ -31,9 +31,9 @@ module.exports = {
   // PWA config
   pwa: {
     name: '7PawStudios',
-    themeColor: "#122f5c",
-    backgroundColor: "#00a9cd",
-    assetsVersion: "1.1.2",
+    themeColor: "#1a1c20",
+    backgroundColor: "#1a1c20",
+    assetsVersion: "1.0.1a",
     msTileColor: "#ffffff"
   },
 
