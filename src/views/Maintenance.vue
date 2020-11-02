@@ -10,14 +10,7 @@
       <span>O</span>
       <span>S</span>
     </div>
-    <div class="launch-date">
-      <span>
-        Launch Date:
-      </span>
-      <span>
-        20.11.2020
-      </span>
-    </div>
+    <CountDown />
   </div>
 </template>
 
@@ -25,11 +18,13 @@
   import anime from 'animejs'
   import { mapState, mapMutations } from 'vuex'
   import Logo from '@components/Logo'
+  import CountDown from '@components/CountDown'
 
   export default {
     name: 'Maintenance',
     components: {
       Logo,
+      CountDown
     },
     data() {
       return {
@@ -111,16 +106,6 @@
         filter: blur(0px);
       }
     }
-  }
-
-  .launch-date {
-    color: $primary;
-    font-family: 'Orbitron';
-    position: absolute;
-    bottom: 35px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-transform: uppercase;
   }
 }
 
