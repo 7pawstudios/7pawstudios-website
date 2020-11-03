@@ -94,7 +94,8 @@
 
   .bottom-text {
     font-size: 0.75em;
-    font-family: 'Orbitron';
+    // font-family: 'Orbitron';
+    font-family: 'Orbitron', sans-serif;
     font-weight: bold;
     margin-top: 10px;
     letter-spacing: 16px;

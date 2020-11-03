@@ -10,7 +10,7 @@
 import { mapState } from 'vuex'
 // import Footer from '@footer'
 // import 'bootstrap-4-grid'
-import './assets/fonts'
+// import './assets/fonts'
 import LogoIcon from '@components/Logo-Icon'
 
 export default {

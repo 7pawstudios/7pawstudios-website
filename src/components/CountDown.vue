@@ -114,7 +114,8 @@ export default {
   .countdown {
     color: $primary;
     min-width: 294px;
-    font-family: 'Orbitron';
+    // font-family: 'Orbitron';
+    font-family: 'Orbitron', sans-serif;
     position: absolute;
     bottom: 35px;
     font-weight: bold;
