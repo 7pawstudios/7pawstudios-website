@@ -1,12 +1,20 @@
 <template>
   <div class="logo-container">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 429.88 85.25">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 429.88 85.25" class="">
       <title>Seven Paw Studios Logo</title>
+      <!-- Define filters and effects -->
+      <defs>
+        <filter id="glow" x="-30%" y="-30%" width="200%" height="200%">
+          <feDropShadow class="glow-color" dx="0" dy="0" stdDeviation="6"/>
+        </filter>
+      </defs>
       <g id="logo-inner-container" data-name="Layer 2">
         <g id="seven">
           <polygon class="logo_s cls-1" points="8.9 21.43 45.08 21.43 45.08 12.53 0 12.53 0 42.96 36.54 42.96 36.54 55.16 0.35 55.16 0.35 64.06 45.43 64.06 45.43 34.05 8.9 34.05 8.9 21.43"/>
           <polygon class="logo_e1 cls-1" points="63.45 55.11 63.45 42.96 73.37 42.96 73.37 34.06 63.45 34.06 63.45 33.98 54.55 33.98 54.55 64 109.72 64 102.31 55.11 63.45 55.11"/>
-          <polygon class="logo_v cls-2" points="53.38 12.63 53.38 21.48 66.97 21.54 85.33 21.54 121.45 67.36 123.49 64.53 155.99 21.54 189.11 21.54 189.11 12.63 151.49 12.65 121.58 53.12 89.65 12.65 53.38 12.63"/>
+          <g class="heartbeat">
+            <polygon class="logo_v cls-2" points="53.38 12.63 53.38 21.48 66.97 21.54 85.33 21.54 121.45 67.36 123.49 64.53 155.99 21.54 189.11 21.54 189.11 12.63 151.49 12.65 121.58 53.12 89.65 12.65 53.38 12.63"/>
+          </g>
           <polygon class="logo_e2 cls-1" points="180.21 55.33 141.55 55.33 134.15 64.22 189.12 64.22 189.12 34.06 170.13 34.06 170.13 42.96 180.21 42.96 180.21 55.33"/>
           <polygon class="logo_n cls-1" points="197.43 12.65 197.43 64.25 206.33 64.25 206.33 20.05 255.17 69.68 255.17 0.19 246.28 11.71 246.28 47.95 211.53 12.65 197.43 12.65"/>
         </g>
@@ -82,18 +90,18 @@ export default {
           keyframes: [
             {
               opacity: 0,
-              filter: 'drop-shadow(0px 0px 0px #f0a500)'
+              // filter: 'drop-shadow(0px 0px 0px #f0a500)'
             },
             {
               opacity: 1,
-              filter: 'drop-shadow(0px 0px 5px #f0a500)'
+              // filter: 'drop-shadow(0px 0px 5px #f0a500)'
             },
-            {
-              filter: 'drop-shadow(0px 0px 0px #f0a500)'
-            },
+            // {
+            //   filter: 'drop-shadow(0px 0px 0px #f0a500)'
+            // },
           ],
           easing: 'easeInOutSine',
-          duration: 500
+          duration: 800
         })
 
       }
@@ -109,7 +117,6 @@ export default {
   align-items: center;
 
   .cls-1 {
-    // fill: #f4f1ed;
     fill: none;
     stroke: $text;
     stroke-width: 1px;
@@ -117,9 +124,6 @@ export default {
 
   .cls-2 {
     fill: #f0a500;
-    // fill: none;
-    // stroke: $text;
-    // stroke-width: 1px;
   }
 
   .logo_v {
@@ -128,6 +132,33 @@ export default {
 
   svg {
     width: 300px;
+
+    .glow-color {
+      flood-color: $primary;
+      animation: glow-beat 2.5s infinite;
+    }
+
+    @keyframes glow-beat {
+      0% {
+        flood-opacity: 1;
+      }
+
+      50% {
+        flood-opacity: 0;
+      }
+
+      100% {
+        flood-opacity: 1;
+      }
+    }
+
+    #logo-inner-container {
+      #seven {
+        .heartbeat {
+          filter:url(#glow);
+        }
+      }
+    }
   }
 }
 
