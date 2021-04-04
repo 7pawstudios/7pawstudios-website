@@ -71,7 +71,7 @@ export default {
     const scrambler = new Scrambler()
 
     Countdown(
-      new Date(2020, 12, 11),
+      new Date(2021, 12, 10),
       (ts) => {
         this.time = ts;
 
