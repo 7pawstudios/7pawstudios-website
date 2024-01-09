@@ -2,7 +2,7 @@
   <div
     class="countdown"
     :class="{ 'glitch': glitchActive }"
-    :glitch-text="!switcher ? time  + ' Remaining' : 'Launch Date: 01.01.2023'"
+    :glitch-text="!switcher ? time  + ' Remaining' : 'RETURN Date: 01.05.2024'"
   >
     <!-- <span v-if="glitchTextToggle">
         Launch Date: 20.11.2020
@@ -11,7 +11,7 @@
       {{ time }} To Go
     </span> -->
     <span>
-      {{ testText }}
+      {{ mainText }}
     </span>
   </div>
 </template>
@@ -30,10 +30,10 @@ export default {
       glitchActive: false,
       glitchTextToggle: true,
       scrambleText: [
-        'Launch Date: 01.01.2023',
+        'Return Date: 01.05.2024',
         ''
       ],
-      testText: 'Launch Date: 01.01.2023'
+      mainText: 'Return Date: 01.05.2023'
     }
   },
   computed: {
