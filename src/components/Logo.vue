@@ -80,7 +80,7 @@ onMounted(() => {
       duration: 800,
       ease: 'inOutSine'
     })
-  }, 2500) // After fill animation starts
+  }, 3400) // After fill animation starts
 
   // Phase 4: STUDIOS text animation
   setTimeout(() => {
@@ -91,7 +91,7 @@ onMounted(() => {
       ease: 'inOutBounce',
       delay: (el, i) => [4, 1, 6, 2, 5, 0, 3][i] * 400
     })
-  }, 3000) // After V letter
+  }, 4200) // After V letter
 })
 </script>
 
