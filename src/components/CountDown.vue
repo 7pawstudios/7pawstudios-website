@@ -30,10 +30,10 @@ export default {
       glitchActive: false,
       glitchTextToggle: true,
       scrambleText: [
-        'Return Date: 01.05.2024',
+        'Launch Date: 05.01.2026',
         ''
       ],
-      mainText: 'Return Date: 01.05.2023'
+      mainText: 'Launch Date: 05.01.2026'
     }
   },
   computed: {
@@ -71,7 +71,7 @@ export default {
     const scrambler = new Scrambler()
 
     Countdown(
-      new Date(2023, 1, 1),
+      new Date(2026, 0, 5),
       (ts) => {
         this.time = ts;
 
