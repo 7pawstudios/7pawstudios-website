@@ -15,7 +15,7 @@ Successfully migrated 7PawStudios website from **Vue 2 + Vue CLI** to **Vue 3 + 
 
 ### Dependencies Updated
 - ✅ **FontAwesome** → v6.7.1 + Vue 3 integration (v3.0.8)
-- ✅ **animejs** → v3.2.2
+- ✅ **animejs** → v4.2.0 (latest with new API)
 - ✅ **core-js** → v3.45.1
 - ✅ Added **vite-plugin-pwa** for PWA support
 

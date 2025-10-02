@@ -29,58 +29,56 @@
 </template>
 
 <script setup>
-import { watch, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-import anime from 'animejs'
-import { useMainStore } from '@/store'
-
-const store = useMainStore()
-const { animationStage2 } = storeToRefs(store)
+import { onMounted } from 'vue'
+import { animate, createTimeline, utils } from 'animejs'
 
 onMounted(() => {
-  // Animate lines
-  const animation = anime.timeline({
-    targets: '#logo-inner-container polygon.cls-1',
-    strokeDashoffset: [anime.setDashoffset, 0],
-    easing: 'easeInOutSine',
-    duration: 1200,
-    delay: (el, i) => {
-      return i * 400
+  // Get all polygon elements and setup for stroke animation
+  const polygons = document.querySelectorAll('#logo-inner-container polygon.cls-1')
+
+  polygons.forEach(polygon => {
+    const length = polygon.getTotalLength()
+    polygon.style.strokeDasharray = length
+    polygon.style.strokeDashoffset = length
+    polygon.style.fill = 'transparent' // Start with no fill
+  })
+
+  // Create master timeline for all animations
+  const masterTimeline = createTimeline({
+    defaults: {
+      ease: 'inOutSine',
+      duration: 1200
     }
   })
 
-  // Animate fill color
-  animation.add({
-    targets: '#logo-inner-container polygon.cls-1',
-    fill: ['#f4f1ed00', '#f4f1ed'],
-    easing: 'easeInOutSine',
-    duration: 1200,
-    delay: (el, i) => i * 500
-  })
+  // Phase 1: Logo stroke drawing
+  masterTimeline.add(animate('#logo-inner-container polygon.cls-1', {
+    strokeDashoffset: { to: 0 },
+    delay: utils.stagger(400)
+  }))
 
-  animation.finished.then(() => {
-    store.setAnimationStage2(true)
-    console.log('Done')
-  })
-})
+  // Phase 2: Logo fill (overlapped with stroke)
+  masterTimeline.add(animate('#logo-inner-container polygon.cls-1', {
+    fill: { to: '#f4f1ed' },
+    delay: utils.stagger(500)
+  }), '-=1200') // Overlap with stroke
 
-watch(animationStage2, (newValue) => {
-  if (newValue === true) {
-    // Animate letter V
-    anime({
-      targets: '#logo-inner-container .logo_v',
-      keyframes: [
-        {
-          opacity: 0
-        },
-        {
-          opacity: 1
-        }
-      ],
-      easing: 'easeInOutSine',
-      duration: 800
-    })
-  }
+  // Phase 3: V letter fade in
+  masterTimeline.add(animate('#logo-inner-container .logo_v', {
+    opacity: { to: 1 },
+    duration: 800
+  }), '+=200') // Small delay after fill
+
+  // Phase 4: STUDIOS text animation
+  masterTimeline.add(animate('.bottom-text span', {
+    filter: { to: 'blur(0px)' },
+    opacity: { to: 1 },
+    ease: 'inOutBounce',
+    delay: (el, i) => [4, 1, 6, 2, 5, 0, 3][i] * 400
+  }), '+=500') // Delay after V letter
+
+  // Start the master timeline
+  masterTimeline.play()
 })
 </script>
 

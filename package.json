@@ -1,7 +1,7 @@
 {
   "name": "7pawstudios-website",
   "description": "7Pawstudios website",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.7.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/vue-fontawesome": "^3.0.8",
-    "animejs": "^3.2.2",
+    "animejs": "^4.0.0",
     "core-js": "^3.45.1",
     "countdown": "^2.6.0",
     "pinia": "^2.2.8",

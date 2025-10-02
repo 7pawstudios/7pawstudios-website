@@ -80,7 +80,7 @@ npm run preview
 | Vue Router | 4.5.0 | Client-side routing |
 | Pinia | 2.2.8 | State management |
 | Sass | 1.79.4 | CSS preprocessing |
-| Anime.js | 3.2.2 | Animation library |
+| Anime.js | 4.2.0 | Animation library |
 | FontAwesome | 6.7.1 | Icon library |
 
 ## 🎨 Customization
