@@ -30,10 +30,15 @@ export default {
       glitchActive: false,
       glitchTextToggle: true,
       scrambleText: [
-        'Launch Date: 05.01.2026',
+        'Launch Date: Loading...',
         ''
       ],
-      mainText: 'Launch Date: 05.01.2026'
+      mainText: 'Launch Date: Loading...',
+      config: {
+        launchDate: '2026-01-05',
+        launchDateDisplay: '05.01.2026',
+        daysOffset: 30
+      }
     }
   },
   computed: {
@@ -41,10 +46,64 @@ export default {
     //   return countdown( new Date(2021, 0, 1) ).toString()
     // }
   },
-  mounted() {
+  methods: {
+    async loadConfig() {
+      try {
+        const response = await fetch('/config.json')
+        const config = await response.json()
+        this.config = config
+        
+        // Update display text with loaded config
+        this.scrambleText[0] = `Launch Date: ${config.launchDateDisplay}`
+        this.mainText = `Launch Date: ${config.launchDateDisplay}`
+        
+        // Parse the launch date and start countdown
+        const [year, month, day] = config.launchDate.split('-').map(Number)
+        this.startCountdown(new Date(year, month - 1, day), config.daysOffset)
+      } catch (error) {
+        console.error('Failed to load config:', error)
+        // Fallback to default values
+        this.startCountdown(new Date(2026, 0, 5), 30)
+      }
+    },
+    
+    startCountdown(targetDate, daysOffset) {
+      const $this = this
+      const scrambler = new Scrambler()
 
-    function delay(cb, ms) {
+      Countdown(
+        targetDate,
+        (ts) => {
+          this.time = ts;
+          // Apply days offset
+          this.time.days = ts.days - daysOffset
+          // Push time to text array
+          this.scrambleText[1] = (ts) + ' Remaining'
+        },
+        ~(Countdown.MONTHS | Countdown.WEEKS |Countdown.HOURS |Countdown.MINUTES | Countdown.SECONDS | Countdown.MILLISECONDS)
+      )
 
+      // define a handler that is called whenever text is scrambled.
+      const handleScramble = (text) => {
+        this.testText = text
+      }
+
+      setInterval(() => {
+        this.switcher = !this.switcher
+
+        this.delay(() => {
+          $this.glitchActive = true
+        }, 7000).delay(() => {
+          $this.glitchActive = false
+        }, 1500)
+
+        // scrambler start
+        const textIndex = this.switcher ? this.scrambleText[1] : this.scrambleText[0]
+        scrambler.scramble(textIndex, handleScramble)
+      }, 8000)
+    },
+    
+    delay(cb, ms) {
       // MyPromise constructor - subclass of Promise
       function MyPromise(fn) {
         var promise       = new Promise((resolve, reject) => fn(resolve, reject));
@@ -58,7 +117,7 @@ export default {
 
       // Extend MyPromise to return delay from promise success
       MyPromise.prototype.delay = function (cb, ms) {
-        return this.then( () => delay(cb, ms) );
+        return this.then( () => this.delay(cb, ms) );
       }
       
       // Create internal 'wait' promise using setTimeout
@@ -66,47 +125,10 @@ export default {
 
       return _wait(ms).then(cb);
     }
-
-    const $this = this
-    const scrambler = new Scrambler()
-
-    Countdown(
-      new Date(2026, 0, 5),
-      (ts) => {
-        this.time = ts;
-
-        // @bug bug fix
-        this.time.days = ts.days - 30
-
-        // Push time to text array
-        this.scrambleText[1] = (ts) + ' Remaining'
-
-      },
-      ~(Countdown.MONTHS | Countdown.WEEKS |Countdown.HOURS |Countdown.MINUTES | Countdown.SECONDS | Countdown.MILLISECONDS)
-      )
-
-      // define a handler that is called whenever text is scrambled.
-      const handleScramble = (text) => {
-        this.testText = text
-      }
-
-      setInterval(() => {
-        this.switcher = !this.switcher
-
-        delay(() => {
-          // console.log('GliTCH')
-          $this.glitchActive = true
-        }, 7000).delay(() => {
-          // console.log('No GliTCH')
-          $this.glitchActive = false
-        }, 1500)
-
-        // scrambler start
-        const textIndex = this.switcher ? this.scrambleText[1] : this.scrambleText[0]
-        scrambler.scramble(textIndex, handleScramble)
-      }, 8000)
-  
   },
+  mounted() {
+    this.loadConfig()
+  }
 }
 </script>
 
