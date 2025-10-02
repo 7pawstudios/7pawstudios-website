@@ -67,6 +67,7 @@ module.exports = {
     loaderOptions: {
       sass: {
         prependData: `
+          @use "sass:math";
           @import "@/assets/scss/_variables.scss";
           @import "@/assets/scss/_mixins.scss";
           @import "@/assets/scss/_wrappers.scss";

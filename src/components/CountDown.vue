@@ -111,6 +111,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  // `@use` moved to global injection via vue.config.js
   .countdown {
     color: $primary;
     min-width: 294px;
@@ -156,10 +157,11 @@ export default {
       $steps: 20;
 
       @for $i from 0 through $steps {
-        #{percentage($i*(1/$steps))} {
-          $top: random(100);
-          $bottom: random(101 - $top);
-          clip-path: inset(#{$top}% 0 #{$bottom}%  0);
+        #{math.div($i * 100%, $steps)} {
+          $top: math.random(100);
+          $space: 100 - $top;
+          $bottom: if($space < 1, 1, math.random($space));
+          clip-path: inset(#{ $top * 1% } 0 #{ $bottom * 1% }  0);
         }
       }
     }
@@ -168,10 +170,11 @@ export default {
       $steps: 20;
 
       @for $i from 0 through $steps {
-        #{percentage($i*(1/$steps))} {
-          $top: random(100);
-          $bottom: random(101 - $top);
-          clip-path: inset(#{$top}% 0 #{$bottom}%  0);
+        #{math.div($i * 100%, $steps)} {
+          $top: math.random(100);
+          $space: 100 - $top;
+          $bottom: if($space < 1, 1, math.random($space));
+          clip-path: inset(#{ $top * 1% } 0 #{ $bottom * 1% }  0);
         }
       }
     }
