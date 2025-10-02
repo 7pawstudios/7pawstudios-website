@@ -40,7 +40,11 @@ onMounted(() => {
     const length = polygon.getTotalLength()
     polygon.style.strokeDasharray = length
     polygon.style.strokeDashoffset = length
-    polygon.style.fill = 'transparent' // Start with no fill
+    // Initialize fill color and opacity for smooth fade-in
+    polygon.style.fill = '#f4f1ed'
+    polygon.setAttribute('fill', '#f4f1ed')
+    polygon.style.fillOpacity = '0'
+    polygon.setAttribute('fill-opacity', '0')
   })
 
   // Create master timeline for all animations
@@ -57,28 +61,37 @@ onMounted(() => {
     delay: utils.stagger(400)
   }))
 
-  // Phase 2: Logo fill (overlapped with stroke)
-  masterTimeline.add(animate('#logo-inner-container polygon.cls-1', {
-    fill: { to: '#f4f1ed' },
-    delay: utils.stagger(500)
-  }), '-=1200') // Overlap with stroke
-
-  // Phase 3: V letter fade in
-  masterTimeline.add(animate('#logo-inner-container .logo_v', {
-    opacity: { to: 1 },
-    duration: 800
-  }), '+=200') // Small delay after fill
-
-  // Phase 4: STUDIOS text animation
-  masterTimeline.add(animate('.bottom-text span', {
-    filter: { to: 'blur(0px)' },
-    opacity: { to: 1 },
-    ease: 'inOutBounce',
-    delay: (el, i) => [4, 1, 6, 2, 5, 0, 3][i] * 400
-  }), '+=500') // Delay after V letter
+  // Smooth fill opacity animation synchronized with strokes
+  animate('#logo-inner-container polygon.cls-1', {
+    fillOpacity: { to: 1 },
+    duration: 900,
+    ease: 'inOutSine',
+    delay: (el, i) => i * 400 + 300 // start after stroke begins, keep same stagger
+  })
 
   // Start the master timeline
   masterTimeline.play()
+
+  // Phase 3: V letter fade in (after fill completes)
+  setTimeout(() => {
+    console.log('Starting V letter animation')
+    animate('#logo-inner-container .logo_v', {
+      opacity: { to: 1 },
+      duration: 800,
+      ease: 'inOutSine'
+    })
+  }, 2500) // After fill animation starts
+
+  // Phase 4: STUDIOS text animation
+  setTimeout(() => {
+    console.log('Starting STUDIOS animation')
+    animate('.bottom-text span', {
+      filter: { to: 'blur(0px)' },
+      opacity: { to: 1 },
+      ease: 'inOutBounce',
+      delay: (el, i) => [4, 1, 6, 2, 5, 0, 3][i] * 400
+    })
+  }, 3000) // After V letter
 })
 </script>
 
@@ -88,11 +101,12 @@ onMounted(() => {
   display: flex;
   align-items: center;
 
-  .cls-1 {
-    fill: none;
-    stroke: $text;
-    stroke-width: 1px;
-  }
+      .cls-1 {
+        fill: #f4f1ed;
+        fill-opacity: 0;
+        stroke: $text;
+        stroke-width: 1px;
+      }
 
   .cls-2 {
     fill: #f0a500;
