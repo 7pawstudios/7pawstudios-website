@@ -40,6 +40,7 @@ import CountDown from '@components/CountDown.vue'
     visibility: visible;
     z-index: 100;
     position: relative;
+    text-align: center;
 
     span {
       opacity: 0;
