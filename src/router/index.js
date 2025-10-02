@@ -1,67 +1,22 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// import Home from '@views/Home'
-// import Services from '@views/Services'
-// import Sectors from '@views/Sectors'
-// import Team from '@views/Team'
-// import Clients from '@views/Clients'
-// import Contact from '@views/Contact'
-import Maintenance from '@views/Maintenance'
-import NotFound from '@views/NotFound'
+import { createRouter, createWebHistory } from 'vue-router'
+import Maintenance from '@views/Maintenance.vue'
+import NotFound from '@views/NotFound.vue'
 
-Vue.use(VueRouter)
-
-  const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home
-  // },
-  // {
-  //   path: '/services',
-  //   name: 'Services',
-  //   component: Services
-  //   // component: () => import(/* webpackChunkName: "services" */ '@views/Services.vue')
-  // },
-  // {
-  //   path: '/sectors',
-  //   name: 'Sectors',
-  //   component: Sectors
-  //   // component: () => import(/* webpackChunkName: "sectors" */ '@views/Sectors.vue')
-  // },
-  // {
-  //   path: '/team',
-  //   name: 'Team',
-  //   component: Team
-  // },
-  // {
-  //   path: '/clients',
-  //   name: 'Clients',
-  //   // component: Clients,
-  //   component: () => import(/* webpackChunkName: "clients" */ '@views/Clients.vue')
-
-  // },
-  // {
-  //   path: '/contact',
-  //   name: 'Contact',
-  //   component: Contact,
-  //   // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // },
+const routes = [
   {
     path: '/',
     name: 'Maintenance',
     component: Maintenance
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     name: '404',
-    component: NotFound,
+    component: NotFound
   }
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 

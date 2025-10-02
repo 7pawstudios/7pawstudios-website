@@ -111,7 +111,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  // `@use` moved to global injection via vue.config.js
   .countdown {
     color: $primary;
     min-width: 294px;

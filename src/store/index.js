@@ -1,28 +1,21 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { defineStore } from 'pinia'
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {
+export const useMainStore = defineStore('main', {
+  state: () => ({
     openNav: false,
     animationStage2: false
-  },
-  mutations: {
-    toggleNav(state) {
-      state.openNav = !state.openNav
+  }),
+  actions: {
+    toggleNav() {
+      this.openNav = !this.openNav
     },
-    closeNav(state) {
-      if(state.openNav) {
-        state.openNav = false
+    closeNav() {
+      if (this.openNav) {
+        this.openNav = false
       }
     },
-    setAnimationStage2(state, param) {
-      state.animationStage2 = param
+    setAnimationStage2(param) {
+      this.animationStage2 = param
     }
-  },
-  actions: {
-  },
-  modules: {
   }
 })

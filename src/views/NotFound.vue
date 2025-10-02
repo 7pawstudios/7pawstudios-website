@@ -6,10 +6,8 @@
   </div>
 </template>
 
-<script>
-  export default {
-    name: 'NotFound'
-  }
+<script setup>
+// Component logic here if needed
 </script>
 
 <style lang="scss" scoped>

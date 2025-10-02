@@ -2,7 +2,7 @@
   <footer>
     <ul>
       <li>
-        <!-- @todo update with actua; links -->
+        <!-- @todo update with actual links -->
         <a href="https://www.facebook.com/Kreston-Zimbabwe-972396369498967" target="_blank">
           <fa-icon :icon="['fab', 'facebook-f']" class="" />
         </a>
@@ -35,10 +35,8 @@
   </footer>
 </template>
 
-<script>
-  export default {
-    name: 'Footer'
-  }
+<script setup>
+// Component logic here if needed
 </script>
 
 <style lang="scss" scoped>

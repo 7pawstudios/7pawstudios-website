@@ -14,10 +14,8 @@
   </router-link>
 </template>
 
-<script>
-export default {
-  name: 'LogoIcon'
-}
+<script setup>
+// Component logic here if needed
 </script>
 
 <style lang="scss" scoped>

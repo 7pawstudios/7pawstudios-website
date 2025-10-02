@@ -28,86 +28,60 @@
   </div>
 </template>
 
-<script>
-import { mapState, mapMutations } from 'vuex'
+<script setup>
+import { watch, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 import anime from 'animejs'
+import { useMainStore } from '@/store'
 
-export default {
-  name: 'Logo',
-  // data() {
-  //   return {
-  //     ...mapState(['animationStage2'])
-  //   }
-  // },
-  computed: {
-    ...mapState(['animationStage2'])
-  },
-  methods: {
-    ...mapMutations(['setAnimationStage2'])
-  },
-  mounted() {
+const store = useMainStore()
+const { animationStage2 } = storeToRefs(store)
 
-    // Animate lines
-    var animation = anime.timeline({
-      // targets: '.logo-container #seven polygon',
-      targets: '#logo-inner-container polygon.cls-1',
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: 'easeInOutSine',
-      duration: 1200,
-      delay: (el, i) => {
-        // console.log(el)
-        return i * 400
-      },
-      // direction: 'alternate',
-      // loop: true
-    })
-
-    // Animate fill color
-    .add({
-      // targets: '.logo-container #seven polygon',
-      targets: '#logo-inner-container polygon.cls-1',
-      fill: ['#f4f1ed00', '#f4f1ed'],
-      easing: 'easeInOutSine',
-      duration: 1200,
-      delay: (el, i) => i * 500,
-      // direction: 'alternate',
-      // loop: true
-    })
-
-    animation.finished.then(() => {
-      this.setAnimationStage2(true)
-      console.log('Done')
-    })
-  },
-  watch: {
-    animationStage2(newValue, oldValue) {
-      // console.log('Done', newValue)
-      if (newValue == true) {
-        
-        // Animate letter V
-        anime({
-          targets: '#logo-inner-container .logo_v',
-          keyframes: [
-            {
-              opacity: 0,
-              // filter: 'drop-shadow(0px 0px 0px #f0a500)'
-            },
-            {
-              opacity: 1,
-              // filter: 'drop-shadow(0px 0px 5px #f0a500)'
-            },
-            // {
-            //   filter: 'drop-shadow(0px 0px 0px #f0a500)'
-            // },
-          ],
-          easing: 'easeInOutSine',
-          duration: 800
-        })
-
-      }
+onMounted(() => {
+  // Animate lines
+  const animation = anime.timeline({
+    targets: '#logo-inner-container polygon.cls-1',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'easeInOutSine',
+    duration: 1200,
+    delay: (el, i) => {
+      return i * 400
     }
-  },
-}
+  })
+
+  // Animate fill color
+  animation.add({
+    targets: '#logo-inner-container polygon.cls-1',
+    fill: ['#f4f1ed00', '#f4f1ed'],
+    easing: 'easeInOutSine',
+    duration: 1200,
+    delay: (el, i) => i * 500
+  })
+
+  animation.finished.then(() => {
+    store.setAnimationStage2(true)
+    console.log('Done')
+  })
+})
+
+watch(animationStage2, (newValue) => {
+  if (newValue === true) {
+    // Animate letter V
+    anime({
+      targets: '#logo-inner-container .logo_v',
+      keyframes: [
+        {
+          opacity: 0
+        },
+        {
+          opacity: 1
+        }
+      ],
+      easing: 'easeInOutSine',
+      duration: 800
+    })
+  }
+})
 </script>
 
 <style lang="scss" scoped>

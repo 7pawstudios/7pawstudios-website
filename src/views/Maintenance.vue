@@ -14,72 +14,47 @@
   </div>
 </template>
 
-<script>
-  import anime from 'animejs'
-  import { mapState, mapMutations } from 'vuex'
-  import Logo from '@components/Logo'
-  import CountDown from '@components/CountDown'
+<script setup>
+import { ref, watch, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import anime from 'animejs'
+import { useMainStore } from '@/store'
+import Logo from '@components/Logo.vue'
+import CountDown from '@components/CountDown.vue'
 
-  export default {
-    name: 'Maintenance',
-    components: {
-      Logo,
-      CountDown
-    },
-    data() {
-      return {
-        order: [4,1,6,2,5,0,3],
-        animationDuration: 800
-      }
-    },
-    computed: {
-      ...mapState(['animationStage2'])
-    },
-    methods: {
-      // ...mapMutations(['setAnimationStage2'])
-      startBlurAnimation() {
-        // Blur text
-        // var animation = anime.timeline({
-        anime({
-          targets: '.bottom-text span',
-          filter: ['blur(5px)', 'blur(0px)'],
-          easing: 'easeInOutBounce',
-          // duration: this.animationDuration,
-          delay: (el, i) => {
-            return this.order[i] * 400
-          }
-        })
+const store = useMainStore()
+const { animationStage2 } = storeToRefs(store)
 
-        // Animate opacity 
-        // .add({
-        anime({
-          targets: '.bottom-text span',
-          opacity: [0, 1],
-          easing: 'easeInOutSine',
-          // duration: this.animationDuration,
-          delay: (el, i) => {
-            // console.log(anime.random(0,6))
-            return this.order[i] * 350
-          }
-        })
-      }
-    },
-    mounted() {
-      // setTimeout(() => {
-        // animation.finished.then(() => {
-        //   this.setAnimationStage2(true)
-        //   // console.log('Done')
-        // })
-      // }, 3500)
-    },
-    watch: {
-      animationStage2(newValue, oldValue) {
-        setTimeout(() => {
-          this.startBlurAnimation()
-        }, 500)
-      }
-    },
-  }
+const order = [4, 1, 6, 2, 5, 0, 3]
+const animationDuration = 800
+
+const startBlurAnimation = () => {
+  // Blur text
+  anime({
+    targets: '.bottom-text span',
+    filter: ['blur(5px)', 'blur(0px)'],
+    easing: 'easeInOutBounce',
+    delay: (el, i) => {
+      return order[i] * 400
+    }
+  })
+
+  // Animate opacity 
+  anime({
+    targets: '.bottom-text span',
+    opacity: [0, 1],
+    easing: 'easeInOutSine',
+    delay: (el, i) => {
+      return order[i] * 350
+    }
+  })
+}
+
+watch(animationStage2, (newValue) => {
+  setTimeout(() => {
+    startBlurAnimation()
+  }, 500)
+})
 </script>
 
 <style lang="scss" scoped>

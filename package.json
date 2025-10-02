@@ -1,38 +1,32 @@
 {
   "name": "7pawstudios-website",
   "description": "7Pawstudios website",
-  "version": "0.1.0",
+  "version": "0.2.0",
+  "type": "module",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "publish": "git push"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-brands-svg-icons": "^5.15.4",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/vue-fontawesome": "^0.1.10",
+    "@fortawesome/fontawesome-svg-core": "^6.7.1",
+    "@fortawesome/free-brands-svg-icons": "^6.7.1",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "animejs": "^3.2.2",
-    "bootstrap-4-grid": "^3.4.0",
     "core-js": "^3.45.1",
     "countdown": "^2.6.0",
-    "register-service-worker": "^1.7.2",
+    "pinia": "^2.2.8",
     "scrambling-text": "^1.2.0",
-    "vue": "^2.7.16",
-    "vue-owl-carousel2": "^2.0.7",
-    "vue-router": "^3.6.5",
-    "vuex": "^3.6.2"
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-pwa": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vitejs/plugin-vue": "^5.2.1",
     "sass": "^1.79.4",
-    "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.7.16",
-    "webpack-bundle-analyzer": "^3.8.0"
+    "vite": "^6.0.5",
+    "vite-plugin-pwa": "^0.21.1"
   }
 }

@@ -1,28 +1,18 @@
 <template>
   <main id="app">
     <LogoIcon />
-    <router-view/>
+    <router-view />
     <!-- <Footer /> -->
   </main>
 </template>
 
-<script>
-import { mapState } from 'vuex'
-// import Footer from '@footer'
-// import 'bootstrap-4-grid'
-// import './assets/fonts'
-import LogoIcon from '@components/Logo-Icon'
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useMainStore } from '@/store'
+import LogoIcon from '@components/Logo-Icon.vue'
 
-export default {
-  name: 'App',
-  components: {
-    // Footer,
-    LogoIcon
-  },
-  computed: {
-    ...mapState(['toggleNav'])
-  },
-}
+const store = useMainStore()
+const { openNav } = storeToRefs(store)
 </script>
 
 <style lang="scss">
