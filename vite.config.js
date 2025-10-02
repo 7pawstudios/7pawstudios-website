@@ -76,9 +76,7 @@ export default defineConfig({
         api: 'modern-compiler',
         additionalData: `
           @use "sass:math";
-          @import "@/assets/scss/_variables.scss";
-          @import "@/assets/scss/_mixins.scss";
-          @import "@/assets/scss/_wrappers.scss";
+          @use "@/assets/scss" as *;
         `
       }
     }

@@ -1,5 +1,3 @@
-/* PS: this file is linked in vue.config.js under 'css.loaderOptions.sass.prependData' */
-
 // Dev Mixins
 @mixin border($size: 1px, $type: solid, $color: grey) {
   border: $size $type $color;

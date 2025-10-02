@@ -60,7 +60,8 @@ All components migrated to **Vue 3 Composition API** with `<script setup>`:
 - ✅ Fixed deprecated `random()` with `math.random()`
 - ✅ Fixed deprecated `percentage()` calculations
 - ✅ Global injection of `@use "sass:math"` via Vite config
-- ⚠️ Still using `@import` for partial files (will migrate to `@use` in future)
+- ✅ **Migrated from `@import` to `@use`/`@forward`** - Modern Sass module system
+- ✅ **Zero deprecation warnings** - Future-proof for Dart Sass 3.0
 
 ## Performance Benefits
 - ⚡ **Faster dev server** - Vite's instant HMR vs webpack
@@ -82,8 +83,7 @@ All components migrated to **Vue 3 Composition API** with `<script setup>`:
 - ✅ No vulnerabilities in dependencies
 
 ## Next Steps (Optional)
-1. **Migrate Sass partials** from `@import` to `@use`/`@forward`
-2. **Add TypeScript** for better type safety
+1. **Add TypeScript** for better type safety
 3. **Add Vitest** for unit testing
 4. **Add Playwright/Cypress** for E2E testing
 5. **Consider Vue 3 teleport** for modals/tooltips
