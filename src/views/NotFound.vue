@@ -3,54 +3,33 @@
     <h1 class="title">404</h1>
     <p class="subtitle">We tracked seven paws but the trail went cold.</p>
 
-    <ul class="paws-grid" aria-label="Seven animal paws">
+    <ul class="paws-grid" aria-label="Seven animal silhouettes">
       <li class="paw-card rabbit">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="rabbitSvg" alt="Rabbit silhouette" />
         <span class="label">Rabbit</span>
       </li>
       <li class="paw-card lynx">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="lynxSvg" alt="Lynx silhouette" />
         <span class="label">Lynx</span>
       </li>
       <li class="paw-card fox">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="foxSvg" alt="Fox silhouette" />
         <span class="label">Fox</span>
       </li>
       <li class="paw-card bear">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="bearSvg" alt="Bear silhouette" />
         <span class="label">Bear</span>
       </li>
       <li class="paw-card cat">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="catSvg" alt="Cat silhouette" />
         <span class="label">Cat</span>
       </li>
       <li class="paw-card raccoon">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="raccoonSvg" alt="Raccoon silhouette" />
         <span class="label">Raccoon</span>
       </li>
       <li class="paw-card tiger">
-        <div class="paw" aria-hidden="true">
-          <span class="toe t1"/><span class="toe t2"/><span class="toe t3"/><span class="toe t4"/>
-          <span class="pad"/>
-        </div>
+        <InlineSvg class="animal-icon" :src="tigerSvg" alt="Tiger silhouette" />
         <span class="label">Tiger</span>
       </li>
     </ul>
@@ -63,7 +42,31 @@
 </template>
 
 <script setup>
-// No additional logic needed for static 404 display
+// Static imports so Vite bundles the SVGs correctly
+import rabbitSvg from '@/assets/svg/animals/rabbit-part-2-svgrepo-com.svg'
+import lynxSvg from '@/assets/svg/animals/lynx-svgrepo-com.svg'
+import foxSvg from '@/assets/svg/animals/fox-wild-animal-fur-vixen-svgrepo-com.svg'
+import bearSvg from '@/assets/svg/animals/bear-black-shape-svgrepo-com.svg'
+import catSvg from '@/assets/svg/animals/cat-5-svgrepo-com.svg'
+import raccoonSvg from '@/assets/svg/animals/racoon-svgrepo-com.svg'
+import tigerSvg from '@/assets/svg/animals/tiger-feline-panther-leopard-svgrepo-com.svg'
+
+// Lightweight inline-svg component so we can style stroke/fill from CSS
+import { h, onMounted, ref } from 'vue'
+
+const InlineSvg = {
+  name: 'InlineSvg',
+  props: { src: { type: String, required: true }, alt: { type: String, default: '' } },
+  setup(props) {
+    const svgHtml = ref('')
+    onMounted(async () => {
+      const res = await fetch(props.src)
+      const text = await res.text()
+      svgHtml.value = text
+    })
+    return () => h('span', { class: 'inline-svg', innerHTML: svgHtml.value, role: 'img', 'aria-label': props.alt })
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -90,6 +93,7 @@
   .subtitle {
     margin: 0 0 24px;
     color: rgba(255,255,255,0.8);
+    font-family: 'Orbitron', sans-serif !important;
   }
 
   .paws-grid {
@@ -115,41 +119,28 @@
     gap: 8px;
   }
 
-  // CSS paw built from a big pad + 4 toes
-  .paw {
-    position: relative;
-    width: 56px;
-    height: 56px;
+  .animal-icon,
+  .inline-svg {
+    width: 80px;
+    height: 80px;
     filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
-    transform: translateZ(0);
+    display: inline-block;
   }
 
-  .toe, .pad {
-    position: absolute;
-    display: block;
-    background: $secondary;
-    border-radius: 999px;
+  // Force SVG strokes to the logo yellow and transparent fill by default
+  .inline-svg :deep(svg) {
+    width: 100%;
+    height: 100%;
+    stroke: #f0a500; // from logo .cls-1
+    fill: transparent;
+    stroke-width: 2.2;
+    vector-effect: non-scaling-stroke;
   }
 
-  // main pad
-  .pad {
-    width: 34px;
-    height: 28px;
-    left: 50%;
-    bottom: 6px;
-    transform: translateX(-50%);
+  // Ensure no internal fills from the source SVGs override the style
+  .inline-svg :deep(svg *) {
+    fill: none !important;
   }
-
-  // toes
-  .toe {
-    width: 14px;
-    height: 16px;
-    top: 2px;
-  }
-  .toe.t1 { left: 4px; }
-  .toe.t2 { left: 18px; }
-  .toe.t3 { right: 18px; }
-  .toe.t4 { right: 4px; }
 
   .label {
     font-size: 12px;
@@ -159,13 +150,14 @@
   }
 
   // Species color accents
-  .lynx .toe, .lynx .pad { background: linear-gradient(180deg, #cdbb9b, #9c815d); }
-  .rabbit .toe, .rabbit .pad { background: linear-gradient(180deg, #f9cbe0, #d78bb3); }
-  .fox .toe, .fox .pad { background: linear-gradient(180deg, #ffb36b, #ff7a3d); }
-  .bear .toe, .bear .pad { background: linear-gradient(180deg, #c48a64, #8b5e3c); }
-  .cat .toe, .cat .pad { background: linear-gradient(180deg, #96e6ff, #5db9e6); }
-  .raccoon .toe, .raccoon .pad { background: linear-gradient(180deg, #c5ccd3, #7b8a97); }
-  .tiger .toe, .tiger .pad { background: linear-gradient(180deg, #ffc26d, #ff9642); }
+  // optional color tints via filter to brand the silhouettes subtly
+  .rabbit .inline-svg :deep(svg) { stroke: #f0a500; }
+  .lynx .inline-svg :deep(svg) { stroke: #f0a500; }
+  .fox .inline-svg :deep(svg) { stroke: #f0a500; }
+  .bear .inline-svg :deep(svg) { stroke: #f0a500; }
+  .cat .inline-svg :deep(svg) { stroke: #f0a500; }
+  .raccoon .inline-svg :deep(svg) { stroke: #f0a500; }
+  .tiger .inline-svg :deep(svg) { stroke: #f0a500; }
 
   .home-link {
     color: $secondary;
