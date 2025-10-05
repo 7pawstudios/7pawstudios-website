@@ -1,8 +1,8 @@
 <template>
   <div
     class="countdown"
-    :class="{ 'glitch': glitchActive }"
-    :glitch-text="glitchText"
+    :class="{ 'glitch': glitchActive || typingActive }"
+    :glitch-text="displayText"
   >
     <!-- <span v-if="glitchTextToggle">
         Launch Date: 20.11.2020
