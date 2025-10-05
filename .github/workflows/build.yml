@@ -1,7 +1,9 @@
-on: 
+on:
   push:
     branches:
       - master
+      - main
+  workflow_dispatch:
 name: 🚀 Deploy to production server
 jobs:
   web-deploy:
@@ -9,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: 📂 Sync frontend files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
