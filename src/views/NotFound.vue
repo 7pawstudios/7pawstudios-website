@@ -5,11 +5,11 @@
 
     <ul class="paws-grid" aria-label="Seven animal silhouettes">
       <li class="paw-card rabbit">
-        <InlineSvg class="animal-icon" :src="rabbitSvg" alt="Rabbit silhouette" />
+        <InlineSvg class="animal-icon" :src="rabbitSvg" alt="Rabbit silhouette" :strip-stroke="true" />
         <span class="label">Rabbit</span>
       </li>
       <li class="paw-card lynx">
-        <InlineSvg class="animal-icon" :src="lynxSvg" alt="Lynx silhouette" />
+        <InlineSvg class="animal-icon" :src="lynxSvg" alt="Lynx silhouette" :strip-stroke="true" />
         <span class="label">Lynx</span>
       </li>
       <li class="paw-card fox">
@@ -25,7 +25,7 @@
         <span class="label">Cat</span>
       </li>
       <li class="paw-card raccoon">
-        <InlineSvg class="animal-icon" :src="raccoonSvg" alt="Raccoon silhouette" />
+        <InlineSvg class="animal-icon" :src="raccoonSvg" alt="Raccoon silhouette" :strip-stroke="true" />
         <span class="label">Raccoon</span>
       </li>
       <li class="paw-card tiger">
@@ -56,13 +56,22 @@ import { h, onMounted, ref } from 'vue'
 
 const InlineSvg = {
   name: 'InlineSvg',
-  props: { src: { type: String, required: true }, alt: { type: String, default: '' } },
+  props: { src: { type: String, required: true }, alt: { type: String, default: '' }, stripStroke: { type: Boolean, default: false } },
   setup(props) {
     const svgHtml = ref('')
     onMounted(async () => {
       const res = await fetch(props.src)
       const text = await res.text()
-      svgHtml.value = text
+      if (props.stripStroke) {
+        // Remove stroke attributes and inline style strokes to avoid double outlines
+        let sanitized = text
+          .replace(/stroke-width\s*=\s*"[^"]*"/gi, '')
+          .replace(/stroke\s*=\s*"(?!none)[^"]*"/gi, '')
+          .replace(/stroke:\s*[^;"']+;?/gi, '')
+        svgHtml.value = sanitized
+      } else {
+        svgHtml.value = text
+      }
     })
     return () => h('span', { class: 'inline-svg', innerHTML: svgHtml.value, role: 'img', 'aria-label': props.alt })
   }
