@@ -10,15 +10,14 @@
     <span v-else>
       {{ time }} To Go
     </span> -->
-    <span>
-      {{ glitchText }}
+    <span class="typed">
+      {{ displayText }}<i v-if="typingActive" class="caret">|</i>
     </span>
   </div>
 </template>
 
 <script>
 import Countdown from 'countdown'
-import Scrambler from 'scrambling-text'
 
 export default {
   name: 'CountDown',
@@ -29,6 +28,8 @@ export default {
       time: '',
       glitchActive: false,
       glitchTextToggle: true,
+      displayText: 'Launch Date: Loading...',
+      typingActive: false,
       scrambleText: [
         'Launch Date: Loading...',
         ''
@@ -56,6 +57,7 @@ export default {
         // Update display text with loaded config
         this.scrambleText[0] = `Launch Date: ${config.launchDateDisplay}`
         this.mainText = `Launch Date: ${config.launchDateDisplay}`
+        this.displayText = this.mainText
         
         // Parse the launch date and start countdown
         const [year, month, day] = config.launchDate.split('-').map(Number)
@@ -69,7 +71,6 @@ export default {
     
     startCountdown(targetDate, daysOffset) {
       const $this = this
-      const scrambler = new Scrambler()
 
       Countdown(
         targetDate,
@@ -95,12 +96,106 @@ export default {
         $this.glitchActive = true
         setTimeout(() => { $this.glitchActive = false }, 1600)
 
-        // scrambler start
-        const textIndex = this.switcher ? this.scrambleText[1] : this.scrambleText[0]
-        scrambler.scramble(textIndex, handleScramble)
+        // typing effect between texts, then optional morph polish
+        const target = this.switcher ? this.scrambleText[1] : this.scrambleText[0]
+        this.typeTransition(this.displayText, target, { eraseMs: 500, typeMs: 900 })
+          .then(() => {
+            this.morphText(this.displayText, target, 600)
+          })
       }, 3800)
     },
     
+    // Typewriter effect: erase then type the new text
+    typeTransition(fromText, toText, opts = { eraseMs: 400, typeMs: 800 }) {
+      const eraseMs = opts.eraseMs || 400
+      const typeMs = opts.typeMs || 800
+      const startErase = performance.now()
+      this.typingActive = true
+
+      return new Promise((resolve) => {
+        // Phase 1: erase
+        const eraseTick = (t) => {
+          const now = t || performance.now()
+          const elapsed = now - startErase
+          const len = fromText.length
+          const progress = Math.min(1, elapsed / eraseMs)
+          const cutIndex = Math.floor(len * (1 - progress))
+          this.displayText = fromText.slice(0, cutIndex)
+          if (progress < 1) {
+            requestAnimationFrame(eraseTick)
+          } else {
+            // Phase 2: type
+            const startType = performance.now()
+            const typeTick = (tt) => {
+              const n = tt || performance.now()
+              const telapsed = n - startType
+              const tprogress = Math.min(1, telapsed / typeMs)
+              const chars = Math.floor(toText.length * tprogress)
+              this.displayText = toText.slice(0, chars)
+              if (tprogress < 1) {
+                requestAnimationFrame(typeTick)
+              } else {
+                this.displayText = toText
+                this.typingActive = false
+                resolve()
+              }
+            }
+            requestAnimationFrame(typeTick)
+          }
+        }
+        requestAnimationFrame(eraseTick)
+      })
+    },
+
+    // Animate a hacker-typing morph between two strings using random glyphs
+    morphText(fromText, toText, durationMs = 1200) {
+      const glyphs = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+      const start = performance.now()
+      const maxLen = Math.max(fromText.length, toText.length)
+      const fromArr = (fromText || '').padEnd(maxLen, ' ').split('')
+      const toArr = (toText || '').padEnd(maxLen, ' ').split('')
+
+      const perCharDelay = 300 // ms stagger until a char locks in
+      const perCharVariance = 200 // adds organic feel
+
+      const charLockTimes = Array.from({ length: maxLen }, (_, i) =>
+        start + Math.min(durationMs - 50, (i / maxLen) * (durationMs - perCharDelay)) + Math.random() * perCharVariance
+      )
+
+      const tick = (t) => {
+        const now = t || performance.now()
+        let done = true
+        const out = new Array(maxLen)
+
+        for (let i = 0; i < maxLen; i++) {
+          const lockAt = charLockTimes[i]
+          if (now >= lockAt) {
+            out[i] = toArr[i]
+          } else {
+            done = false
+            // show a random glyph or the original char occasionally
+            const progress = (now - start) / durationMs
+            const randomEvery = Math.max(2, Math.floor(8 - progress * 6))
+            if (Math.floor(now / 30 + i) % randomEvery === 0) {
+              out[i] = glyphs[Math.floor(Math.random() * glyphs.length)]
+            } else {
+              out[i] = fromArr[i]
+            }
+          }
+        }
+
+        this.displayText = out.join('')
+
+        if (!done && now - start < durationMs + 200) {
+          requestAnimationFrame(tick)
+        } else {
+          this.displayText = toText
+        }
+      }
+
+      requestAnimationFrame(tick)
+    },
+
     delay(cb, ms) {
       // MyPromise constructor - subclass of Promise
       function MyPromise(fn) {
@@ -150,6 +245,16 @@ export default {
       z-index: 3;
       display: inline-block;
       width: 100%;
+    }
+
+    .typed {
+      .caret {
+        display: inline-block;
+        margin-left: 2px;
+        width: 10px;
+        color: $secondary;
+        animation: caret-blink 800ms steps(2, end) infinite;
+      }
     }
 
     &.glitch {
@@ -284,6 +389,11 @@ export default {
     @keyframes scan-move {
       0%   { background-position-y: 0; }
       100% { background-position-y: 4px; }
+    }
+
+    @keyframes caret-blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
     }
 
   }
